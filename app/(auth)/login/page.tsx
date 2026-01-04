@@ -33,7 +33,7 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button formAction={login} className="w-full bg-zinc-100 text-zinc-950 hover:bg-zinc-300">
+            <Button formAction={login} className="w-full bg-white text-black hover:bg-zinc-200 font-medium transition-all duration-300 shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.5)]">
               Sign in
             </Button>
           </CardFooter>

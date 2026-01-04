@@ -16,7 +16,7 @@ export function CommentForm({ postId, slug, user }: CommentFormProps) {
     return (
       <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6 text-center">
         <p className="text-zinc-400 mb-4">Please log in to leave a comment.</p>
-        <Button asChild variant="outline">
+        <Button asChild className="bg-zinc-100 text-zinc-950 hover:bg-zinc-300">
           <Link href={`/login?next=/posts/${slug}`}>Log in</Link>
         </Button>
       </div>
