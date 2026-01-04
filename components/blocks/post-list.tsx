@@ -1,8 +1,8 @@
 import { PostCard } from "@/components/ui/post-card";
-import { BlogPost } from "@/types/blog";
+import { Post } from "@/types";
 
 interface PostListProps {
-  posts: BlogPost[];
+  posts: Post[];
 }
 
 export function PostList({ posts }: PostListProps) {
