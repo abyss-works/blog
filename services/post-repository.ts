@@ -8,7 +8,7 @@ export interface PostRepository {
    * @param limit Number of posts per page
    * @param publishedOnly If true, only returns published posts
    */
-  getPosts(page: number, limit?: number, publishedOnly?: boolean): Promise<Post[]>;
+  getPosts(page: number, limit?: number, options?: { publishedOnly?: boolean, categorySlug?: string, tagSlug?: string }): Promise<Post[]>;
 
   /**
    * getPostBySlug

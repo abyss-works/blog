@@ -4,7 +4,7 @@ import { PostList } from "@/components/blocks/post-list"
 import { WaveBackground } from "@/components/ui/wave-background"
 
 export default async function Home() {
-  const posts = await postService.getPosts(1, 10)
+  const posts = await postService.getPosts(1, 10, { publishedOnly: true })
 
   return (
     <main className="min-h-screen bg-[#050505] text-zinc-100 selection:bg-zinc-800">

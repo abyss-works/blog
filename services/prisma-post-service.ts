@@ -3,10 +3,34 @@ import { Post, Tag, Comment } from "@/types";
 import { prisma } from "@/lib/prisma";
 
 export class PrismaPostService implements PostRepository {
-  async getPosts(page: number = 1, limit: number = 10, publishedOnly: boolean = true): Promise<Post[]> {
+  async getPosts(
+    page: number = 1, 
+    limit: number = 10, 
+    options: { publishedOnly?: boolean, categorySlug?: string, tagSlug?: string } = { publishedOnly: true }
+  ): Promise<Post[]> {
     const skip = (page - 1) * limit;
 
-    const whereCondition = publishedOnly ? { published: true } : {};
+    const whereCondition: any = {};
+    
+    if (options.publishedOnly) {
+      whereCondition.published = true;
+    }
+
+    if (options.categorySlug) {
+      whereCondition.categories = {
+        some: {
+          slug: options.categorySlug
+        }
+      };
+    }
+
+    if (options.tagSlug) {
+      whereCondition.tags = {
+        some: {
+          slug: options.tagSlug
+        }
+      };
+    }
 
     const posts = await prisma.post.findMany({
       where: whereCondition,
