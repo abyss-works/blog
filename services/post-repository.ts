@@ -1,4 +1,4 @@
-import { Post } from "@/types";
+import { Post, Comment } from "@/types";
 
 export interface PostRepository {
   /**
@@ -24,6 +24,17 @@ export interface PostRepository {
    */
   createPost(data: Partial<Post>): Promise<Post>;
 
-  // Future methods
-  // updatePost(id: string, data: Partial<Post>): Promise<Post>;
+  /**
+   * getComments
+   * Retrieves comments for a specific post.
+   * @param postId The ID of the post
+   */
+  getComments(postId: string): Promise<Comment[]>;
+
+  /**
+   * createComment
+   * Creates a new comment.
+   * @param data Partial comment data
+   */
+  createComment(data: Partial<Comment>): Promise<Comment>;
 }

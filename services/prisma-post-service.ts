@@ -1,5 +1,5 @@
 import { PostRepository } from "./post-repository";
-import { Post, Tag } from "@/types";
+import { Post, Tag, Comment } from "@/types";
 import { prisma } from "@/lib/prisma";
 
 export class PrismaPostService implements PostRepository {
@@ -82,6 +82,66 @@ export class PrismaPostService implements PostRepository {
     });
 
     return this.mapPrismaPostToDomain(post);
+  }
+
+  async getComments(postId: string): Promise<Comment[]> {
+    const comments = await prisma.comment.findMany({
+      where: { post_id: postId },
+      orderBy: { created_at: "asc" }, // Oldest first generally makes sense for reading flow, or desc for newest. Let's go with asc for conversation.
+      include: {
+        author: true
+      }
+    });
+
+    return comments.map(c => ({
+      id: c.id,
+      post_id: c.post_id,
+      author_id: c.author_id,
+      content: c.content,
+      parent_id: c.parent_id,
+      created_at: c.created_at.toISOString(),
+      author: {
+        id: c.author.id,
+        username: c.author.username,
+        avatar_url: c.author.avatar_url || undefined,
+        role: c.author.role as "user" | "admin",
+        created_at: c.author.created_at.toISOString()
+      }
+    }));
+  }
+
+  async createComment(data: Partial<Comment>): Promise<Comment> {
+    if (!data.post_id || !data.author_id || !data.content) {
+      throw new Error("Missing required fields for comment");
+    }
+
+    const comment = await prisma.comment.create({
+      data: {
+        content: data.content,
+        post_id: data.post_id,
+        author_id: data.author_id,
+        parent_id: data.parent_id
+      },
+      include: {
+        author: true
+      }
+    });
+
+    return {
+      id: comment.id,
+      post_id: comment.post_id,
+      author_id: comment.author_id,
+      content: comment.content,
+      parent_id: comment.parent_id,
+      created_at: comment.created_at.toISOString(),
+      author: {
+        id: comment.author.id,
+        username: comment.author.username,
+        avatar_url: comment.author.avatar_url || undefined,
+        role: comment.author.role as "user" | "admin",
+        created_at: comment.author.created_at.toISOString()
+      }
+    };
   }
 
   // Private helper to map database model to domain model
