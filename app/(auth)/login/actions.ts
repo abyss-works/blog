@@ -24,3 +24,23 @@ export async function login(formData: FormData) {
   revalidatePath('/', 'layout')
   redirect('/')
 }
+
+export async function loginWithGoogle() {
+  const supabase = await createClient()
+  const origin = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000" // Adjust based on env
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  })
+
+  if (error) {
+    redirect('/error')
+  }
+
+  if (data.url) {
+    redirect(data.url)
+  }
+}
