@@ -17,7 +17,13 @@ export interface PostRepository {
    */
   getPostBySlug(slug: string): Promise<Post | null>;
 
-  // Future methods (commented out for now until implementation)
-  // createPost(data: Partial<Post>): Promise<Post>;
+  /**
+   * createPost
+   * Creates a new post.
+   * @param data Partial post data
+   */
+  createPost(data: Partial<Post>): Promise<Post>;
+
+  // Future methods
   // updatePost(id: string, data: Partial<Post>): Promise<Post>;
 }
