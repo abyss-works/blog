@@ -24,9 +24,14 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <form>
-          <CardContent className="space-y-6 pt-6">
-             <div className="text-center space-y-2">
-                <p className="text-sm text-zinc-400">Sign in to continue to the studio</p>
+          <CardContent className="space-y-6 pt-0 pb-6">
+             <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-zinc-800" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-[#0A0A0A] px-2 text-zinc-500">Access with Social</span>
+                </div>
              </div>
           </CardContent>
           <CardFooter className="pb-10">
