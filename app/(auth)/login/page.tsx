@@ -38,7 +38,7 @@ export default function LoginPage() {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" classname="text-zinc-300">Password</Label>
+                <Label htmlFor="password" className="text-zinc-300">Password</Label>
                 <span className="text-xs text-zinc-500 hover:text-zinc-300 cursor-pointer transition-colors">Forgot password?</span>
               </div>
               <Input 
