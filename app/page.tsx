@@ -2,9 +2,26 @@ import { postService } from "@/services/prisma-post-service"
 import { PostCard } from "@/components/ui/post-card"
 import { PostList } from "@/components/blocks/post-list"
 import { WaveBackground } from "@/components/ui/wave-background"
+import { createClient } from "@/utils/supabase/server"
+import { prisma } from "@/lib/prisma"
+import { Button } from "@/components/ui/button" // Ensure Button is available
+import Link from "next/link"
+import { Plus } from "lucide-react"
 
 export default async function Home() {
   const posts = await postService.getPosts(1, 10, { publishedOnly: true })
+  
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  let isAdmin = false
+  if (user) {
+    const profile = await prisma.profile.findUnique({
+        where: { id: user.id },
+        select: { role: true }
+    })
+    isAdmin = profile?.role === 'admin'
+  }
 
   return (
     <main className="min-h-screen bg-[#050505] text-zinc-100 selection:bg-zinc-800">
@@ -27,6 +44,14 @@ export default async function Home() {
       <section className="max-w-5xl mx-auto px-6 py-20">
         <div className="flex items-center justify-between mb-12">
           <h2 className="text-3xl font-bold tracking-tight">Recent Posts</h2>
+          {isAdmin && (
+            <Button asChild size="sm" className="gap-2 bg-zinc-100 text-zinc-950 hover:bg-zinc-300">
+              <Link href="/admin/write">
+                <Plus className="h-4 w-4" />
+                Write Post
+              </Link>
+            </Button>
+          )}
         </div>
         
         <PostList posts={posts} />

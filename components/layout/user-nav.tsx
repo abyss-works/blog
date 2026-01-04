@@ -59,11 +59,7 @@ export function UserNav({ user, profile }: UserNavProps) {
         <DropdownMenuItem asChild className="focus:bg-zinc-900 focus:text-zinc-100 cursor-pointer">
            <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
-        {profile?.role === 'admin' && (
-          <DropdownMenuItem asChild className="focus:bg-zinc-900 focus:text-zinc-100 cursor-pointer text-amber-500 focus:text-amber-400">
-            <Link href="/admin/write">Write Post</Link>
-          </DropdownMenuItem>
-        )}
+
         <DropdownMenuSeparator className="bg-zinc-800" />
         <DropdownMenuItem 
           className="focus:bg-zinc-900 focus:text-zinc-100 cursor-pointer text-red-500 focus:text-red-400"
