@@ -26,9 +26,6 @@ RUN apk add --no-cache openssl && \
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.bin/prisma /usr/local/bin/prisma
-COPY --from=builder /app/node_modules/prisma /app/node_modules/prisma
-COPY --from=builder /app/node_modules/@prisma /app/node_modules/@prisma
 
 # Set correct permissions for standalone output
 RUN mkdir -p /app/.next
