@@ -7,7 +7,9 @@ function toBlogMeta(post: PostModel): BlogMeta {
   return {
     title: post.title,
     description: post.description ?? "",
-    date: post.createdAt.toISOString().split("T")[0],
+    date: post.date
+      ? post.date.toISOString().split("T")[0]
+      : post.createdAt.toISOString().split("T")[0],
     tags: post.tags,
   };
 }
@@ -15,7 +17,7 @@ function toBlogMeta(post: PostModel): BlogMeta {
 export async function getPosts(): Promise<BlogPost[]> {
   const posts: PostModel[] = await prisma.post.findMany({
     where: { status: PostStatus.PUBLISHED },
-    orderBy: { createdAt: "desc" },
+    orderBy: { date: "desc" },
   });
 
   return posts.map((p) => ({

@@ -19,6 +19,7 @@ model Post {
   title       String
   description String?
   content     String?
+  date        DateTime?
   tags        String[] @default([])
   status      PostStatus @default(DRAFT)
   createdAt   DateTime   @default(now())
