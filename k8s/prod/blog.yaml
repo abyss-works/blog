@@ -25,6 +25,12 @@ spec:
       - name: blog
         image: registry.abyssworks.dev/blog:latest
         imagePullPolicy: Always
+        command:
+        - /bin/sh
+        - -c
+        - |
+          prisma migrate deploy 2>&1
+          exec node server.js
         env:
         - name: DATABASE_URL
           value: postgresql://postgres:postgres@postgres:5432/blog
