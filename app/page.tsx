@@ -2,6 +2,8 @@ import { getPosts } from "@/services/post";
 import { PostList } from "@/components/blocks/post-list";
 
 // Server Component
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   // DAL: Fetch data securely on the server
   // This data is never exposed directly to the client as raw JSON,

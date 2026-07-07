@@ -8,5 +8,5 @@ export interface BlogMeta {
 export interface BlogPost extends BlogMeta {
   id: string;
   slug: string;
-  content?: string; // Optional for list view
+  content?: string;
 }
