@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
 import matter from "gray-matter";
+import crypto from "crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { PostStatus } from "@/lib/generated/prisma/enums";
@@ -26,10 +27,9 @@ async function main() {
     const { data, content } = matter(raw);
     const parsed = FrontmatterSchema.parse(data);
 
-    const existing = await prisma.post.findUnique({
-      where: { slug: parsed.slug },
-    });
-
+    const uuid = crypto.randomUUID();
+    const urlId = uuid.substring(0, 8);
+    const slug = `${parsed.slug}-${urlId}`;
     const postData = {
       title: parsed.title,
       description: parsed.description,
@@ -39,20 +39,21 @@ async function main() {
       status: PostStatus.PUBLISHED,
     };
 
+    const existing = await prisma.post.findFirst({
+      where: { slug: parsed.slug },
+    });
+
     if (existing) {
       await prisma.post.update({
-        where: { slug: parsed.slug },
-        data: postData,
+        where: { id: existing.id },
+        data: { slug, ...postData },
       });
       console.log(`✔ updated: ${parsed.slug}`);
     } else {
       await prisma.post.create({
-        data: {
-          slug: parsed.slug,
-          ...postData,
-        },
+        data: { id: uuid, urlId, slug, ...postData },
       });
-      console.log(`✔ imported: ${parsed.slug}`);
+      console.log(`✔ imported: ${parsed.slug} → ${slug}`);
     }
     imported++;
   }
