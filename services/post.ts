@@ -21,22 +21,22 @@ export async function getPosts(): Promise<BlogPost[]> {
   });
 
   return posts.map((p) => ({
-    id: p.id,
-    slug: p.slug,
+    id: p.urlId,
+    slug: p.slug ?? undefined,
     ...toBlogMeta(p),
   }));
 }
 
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+export async function getPostByUrlId(urlId: string): Promise<BlogPost | null> {
   const post: PostModel | null = await prisma.post.findFirst({
-    where: { slug, status: PostStatus.PUBLISHED },
+    where: { urlId, status: PostStatus.PUBLISHED },
   });
 
   if (!post) return null;
 
   return {
-    id: post.id,
-    slug: post.slug,
+    id: post.urlId,
+    slug: post.slug ?? undefined,
     content: post.content ?? undefined,
     ...toBlogMeta(post),
   };

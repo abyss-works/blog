@@ -16,8 +16,9 @@ interface PostCardProps {
 }
 
 export function PostCard({ post }: PostCardProps) {
+  const href = post.slug ? `/posts/${post.slug}-${post.id}` : `/posts/${post.id}`;
   return (
-    <Link href={`/posts/${post.slug}`} className="block group">
+    <Link href={href} className="block group">
       <Card className="h-full border-zinc-800 bg-zinc-950/50 transition-colors hover:border-zinc-700 hover:bg-zinc-900/50">
         <CardHeader>
           <div className="flex items-center justify-between mb-2">

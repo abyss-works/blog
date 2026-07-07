@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getPostBySlug } from "@/services/post";
+import { getPostByUrlId } from "@/services/post";
 import { PostContent } from "@/components/blocks/post-content";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeftIcon, CalendarIcon } from "lucide-react";
@@ -13,7 +13,10 @@ interface PageProps {
 
 export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  // URL format: /posts/{slug}-{urlId} or /posts/{urlId}
+  // Extract last 8 chars as urlId
+  const urlId = slug.length >= 8 ? slug.slice(-8) : slug;
+  const post = await getPostByUrlId(urlId);
 
   if (!post) {
     notFound();

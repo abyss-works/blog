@@ -3,8 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-function toSlug(title: string): string {
-  // ASCII-only: lowercase, replace spaces with hyphens, remove special chars
+function toKebab(title: string): string {
   const ascii = title.replace(/[^\x00-\x7F]/g, "");
   if (ascii.trim()) {
     return ascii
@@ -15,39 +14,19 @@ function toSlug(title: string): string {
       .replace(/-+/g, "-")
       .replace(/^-+|-+$/g, "");
   }
-  // Non-ASCII title (Korean, etc.): use timestamp
-  return `post-${Date.now()}`;
+  return "";
 }
 
 export default function AdminPage() {
   const router = useRouter();
-  const [slug, setSlug] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
 
-  const handleTitleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const val = e.target.value;
-      setTitle(val);
-      if (!slugManuallyEdited) {
-        setSlug(toSlug(val));
-      }
-    },
-    [slugManuallyEdited]
-  );
-
-  const handleSlugChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSlug(e.target.value);
-      setSlugManuallyEdited(true);
-    },
-    []
-  );
+  const slug = toKebab(title);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -76,7 +55,10 @@ export default function AdminPage() {
       return;
     }
 
-    router.push(`/posts/${slug}`);
+    const data = await res.json();
+    const urlId = data.id;
+    const displaySlug = data.slug ? `${data.slug}-${urlId}` : urlId;
+    router.push(`/posts/${displaySlug}`);
   }
 
   return (
@@ -93,15 +75,27 @@ export default function AdminPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm text-zinc-400 mb-1">Title</label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Post Title"
+              className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:border-zinc-600"
+              required
+            />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-zinc-400 mb-1">Slug</label>
+              <label className="block text-sm text-zinc-400 mb-1">
+                Description
+              </label>
               <input
-                value={slug}
-                onChange={handleSlugChange}
-                placeholder="my-post-slug"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Brief description..."
                 className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:border-zinc-600"
-                required
               />
             </div>
             <div>
@@ -115,29 +109,6 @@ export default function AdminPage() {
                 className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:border-zinc-600"
               />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-sm text-zinc-400 mb-1">Title</label>
-            <input
-              value={title}
-              onChange={handleTitleChange}
-              placeholder="Post Title"
-              className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:border-zinc-600"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-zinc-400 mb-1">
-              Description
-            </label>
-            <input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Brief description for the card..."
-              className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:border-zinc-600"
-            />
           </div>
 
           <div>
