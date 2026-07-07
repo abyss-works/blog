@@ -40,6 +40,8 @@ spec:
           value: production
         - name: HOSTNAME
           value: "0.0.0.0"
+        - name: NODE_PATH
+          value: /app/node_modules
         ports:
         - containerPort: 3000
 ---
