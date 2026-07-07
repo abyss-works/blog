@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: blog-stage
+commonLabels:
+  project: blog
+  environment: stage
+resources:
+  - namespace.yaml
+  - blog.yaml
+  - postgres.yaml
+  - ingress.yaml
+images:
+- name: blog
+  newName: registry.abyssworks.dev/blog
+  newTag: latest
