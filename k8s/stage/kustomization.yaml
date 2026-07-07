@@ -12,4 +12,4 @@ resources:
 images:
 - name: registry.abyssworks.dev/blog
   newName: registry.abyssworks.dev/blog
-  newTag: git-fe98e51
+  newTag: git-36fe589
