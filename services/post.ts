@@ -26,7 +26,7 @@ export async function getPosts(): Promise<BlogPost[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  const post: PostModel | null = await prisma.post.findUnique({
+  const post: PostModel | null = await prisma.post.findFirst({
     where: { slug, status: PostStatus.PUBLISHED },
   });
 
