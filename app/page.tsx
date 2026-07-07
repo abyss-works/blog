@@ -1,5 +1,7 @@
 import { getPosts } from "@/services/post";
 import { PostList } from "@/components/blocks/post-list";
+import Link from "next/link";
+import { PlusIcon } from "lucide-react";
 
 // Server Component
 export const dynamic = "force-dynamic";
@@ -36,6 +38,15 @@ export default async function Home() {
         
         <PostList posts={posts} />
       </section>
+      
+      {/* FAB — New Post */}
+      <Link
+        href="/admin"
+        className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-100 text-zinc-900 shadow-lg hover:bg-zinc-300 transition-colors"
+        aria-label="New Post"
+      >
+        <PlusIcon className="h-6 w-6" />
+      </Link>
       
       {/* Footer */}
       <footer className="border-t border-zinc-900 py-12 mt-12">
