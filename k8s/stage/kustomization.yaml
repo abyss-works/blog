@@ -10,6 +10,6 @@ resources:
   - postgres.yaml
   - ingress.yaml
 images:
-- name: blog
+- name: registry.abyssworks.dev/blog
   newName: registry.abyssworks.dev/blog
   newTag: git-fe98e51
