@@ -1,35 +1,41 @@
-import { BlogPost } from "@/types/blog";
+import { prisma } from "@/lib/db";
+import { BlogPost, BlogMeta } from "@/types/blog";
+import { PostStatus } from "@/lib/generated/prisma/enums";
+import type { PostModel } from "@/lib/generated/prisma/models/Post";
 
-// Mock Data
-const POSTS: BlogPost[] = [
-  {
-    id: "1",
-    slug: "architecting-the-abyss",
-    title: "Architecting the Abyss: A Deep Dive into Next.js 16",
-    description: "Exploring the depths of Server Components and the new App Router paradigm for building scalable, high-performance applications.",
-    date: "2026-01-02",
-    tags: ["Next.js", "Architecture", "Server Components"],
-  },
-  {
-    id: "2",
-    slug: "minimalism-in-code",
-    title: "The Art of Minimalism in Software Design",
-    description: "Why less is often more when it comes to long-term maintainability and system robustness.",
-    date: "2025-12-28",
-    tags: ["Design Patterns", "Minimalism", "Refactoring"],
-  },
-  {
-    id: "3",
-    slug: "secure-by-default",
-    title: "Secure by Default: Mitigating RCE in Modern Web Apps",
-    description: "Addressing recent security concerns like CVE-2025-55182 with strict architectural boundaries.",
-    date: "2025-12-15",
-    tags: ["Security", "RCE", "Best Practices"],
-  },
-];
+function toBlogMeta(post: PostModel): BlogMeta {
+  return {
+    title: post.title,
+    description: post.description ?? "",
+    date: post.createdAt.toISOString().split("T")[0],
+    tags: post.tags,
+  };
+}
 
 export async function getPosts(): Promise<BlogPost[]> {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 100));
-  return POSTS;
+  const posts: PostModel[] = await prisma.post.findMany({
+    where: { status: PostStatus.PUBLISHED },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return posts.map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    ...toBlogMeta(p),
+  }));
+}
+
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  const post: PostModel | null = await prisma.post.findUnique({
+    where: { slug, status: PostStatus.PUBLISHED },
+  });
+
+  if (!post) return null;
+
+  return {
+    id: post.id,
+    slug: post.slug,
+    content: post.content ?? undefined,
+    ...toBlogMeta(post),
+  };
 }
