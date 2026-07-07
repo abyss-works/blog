@@ -1,7 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+
+function toSlug(title: string): string {
+  // ASCII-only: lowercase, replace spaces with hyphens, remove special chars
+  const ascii = title.replace(/[^\x00-\x7F]/g, "");
+  if (ascii.trim()) {
+    return ascii
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+  // Non-ASCII title (Korean, etc.): use timestamp
+  return `post-${Date.now()}`;
+}
 
 export default function AdminPage() {
   const router = useRouter();
@@ -12,6 +28,26 @@ export default function AdminPage() {
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
+
+  const handleTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const val = e.target.value;
+      setTitle(val);
+      if (!slugManuallyEdited) {
+        setSlug(toSlug(val));
+      }
+    },
+    [slugManuallyEdited]
+  );
+
+  const handleSlugChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSlug(e.target.value);
+      setSlugManuallyEdited(true);
+    },
+    []
+  );
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -62,7 +98,7 @@ export default function AdminPage() {
               <label className="block text-sm text-zinc-400 mb-1">Slug</label>
               <input
                 value={slug}
-                onChange={(e) => setSlug(e.target.value)}
+                onChange={handleSlugChange}
                 placeholder="my-post-slug"
                 className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:border-zinc-600"
                 required
@@ -85,7 +121,7 @@ export default function AdminPage() {
             <label className="block text-sm text-zinc-400 mb-1">Title</label>
             <input
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleTitleChange}
               placeholder="Post Title"
               className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm focus:outline-none focus:border-zinc-600"
               required
