@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { BlogPost } from "@/types/blog";
 import { CalendarIcon } from "lucide-react";
-import { categoryHref, postHref, tagHref } from "@/lib/utils";
+import { categoryHref, formatMonth, postHref, tagHref } from "@/lib/utils";
 
 interface PostCardProps {
   post: BlogPost;
@@ -24,7 +24,7 @@ export function PostCard({ post }: PostCardProps) {
           <div className="flex items-center justify-between gap-3 font-mono text-xs text-muted-foreground">
             <time dateTime={post.date} className="flex items-center gap-1">
               <CalendarIcon aria-hidden="true" className="size-3" />
-              {post.date}
+              {formatMonth(post.date)}
             </time>
             {post.category && (
               <Link

@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { SignOutButton } from "./sign-out-button";
 import { PostForm } from "./post-form";
 
-export const metadata: Metadata = { title: "새 글" };
+export const metadata: Metadata = { title: "New Post" };
 
 export default async function AdminPage() {
   const { user } = await verifySession();
@@ -14,7 +14,7 @@ export default async function AdminPage() {
   return (
     <Container size="narrow" className="pb-8">
       <PageHeader
-        title="새 글"
+        title="New Post"
         description={user.email}
         actions={<SignOutButton />}
       />

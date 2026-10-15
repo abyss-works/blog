@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { BlogPost } from "@/types/blog";
-import { categoryHref, tagHref } from "@/lib/utils";
+import { categoryHref, formatMonth, tagHref } from "@/lib/utils";
 
 interface ArticleHeaderProps {
   post: BlogPost;
@@ -19,7 +19,7 @@ export function ArticleHeader({ post }: ArticleHeaderProps) {
         Posts
       </Link>
       <p className="mb-3 flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
-        <time dateTime={post.date}>{post.date}</time>
+        <time dateTime={post.date}>{formatMonth(post.date)}</time>
         {post.category && (
           <>
             <span aria-hidden="true">·</span>

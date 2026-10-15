@@ -24,7 +24,7 @@ export default async function Home() {
             />
           }
         >
-          <SectionHeading>최신 글</SectionHeading>
+          <SectionHeading>Latest Posts</SectionHeading>
           <PostGrid posts={posts} columns={2} emptyText="아직 글이 없습니다." />
         </WithAside>
       </Container>
