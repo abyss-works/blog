@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog
+  namespace: blog-prod
+  labels:
+    app: blog
+    project: blog
+    environment: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog
+      project: blog
+      environment: prod
+  template:
+    metadata:
+      labels:
+        app: blog
+        project: blog
+        environment: prod
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: oci-node
+      containers:
+        - name: blog
+          image: ghcr.io/abyss-works/blog:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -ec
+          args:
+            - |
+              export DATABASE_URL="$(node -e 'const e = encodeURIComponent; process.stdout.write(`postgresql://${e(process.env.POSTGRES_USER)}:${e(process.env.POSTGRES_PASSWORD)}@postgres:5432/${e(process.env.POSTGRES_DB)}`)')"
+              prisma migrate deploy
+              unset POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+              exec node server.js
+          envFrom:
+            - configMapRef:
+                name: blog
+            - configMapRef:
+                name: postgres
+            - secretRef:
+                name: postgres
+            - secretRef:
+                name: better-auth
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          startupProbe:
+            httpGet:
+              path: /
+              port: 3000
+            periodSeconds: 5
+            failureThreshold: 60
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            periodSeconds: 10
+            timeoutSeconds: 5

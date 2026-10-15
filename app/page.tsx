@@ -2,6 +2,7 @@ import { getPosts } from "@/services/post";
 import { PostList } from "@/components/blocks/post-list";
 import Link from "next/link";
 import { PlusIcon } from "lucide-react";
+import { WaveBackground } from "@/components/ui/wave-background";
 
 // Server Component
 export const dynamic = "force-dynamic";
@@ -17,6 +18,7 @@ export default async function Home() {
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center py-32 px-4 text-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-800/10 via-transparent to-transparent opacity-50" />
+        <WaveBackground className="opacity-40" />
         
         <h1 className="relative z-10 text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent">
           Abyssworks Studio

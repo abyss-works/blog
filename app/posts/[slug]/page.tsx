@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getPostBySlug } from "@/services/post";
+import { getPostByUrlId } from "@/services/post";
 import { PostContent } from "@/components/blocks/post-content";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeftIcon, CalendarIcon } from "lucide-react";
+import { categoryHref, tagHref } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,10 @@ interface PageProps {
 
 export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  // URL format: /posts/{slug}-{urlId} or /posts/{urlId}
+  // Extract last 8 chars as urlId
+  const urlId = slug.length >= 8 ? slug.slice(-8) : slug;
+  const post = await getPostByUrlId(urlId);
 
   if (!post) {
     notFound();
@@ -41,16 +45,25 @@ export default async function PostPage({ params }: PageProps) {
               <CalendarIcon className="h-4 w-4" />
               {post.date}
             </div>
+            {post.category && (
+              <Link
+                href={categoryHref(post.category)}
+                className="text-zinc-400 hover:text-zinc-200 transition-colors"
+              >
+                {post.category}
+              </Link>
+            )}
           </div>
           {post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
               {post.tags.map((tag) => (
                 <Badge
                   key={tag}
+                  asChild
                   variant="secondary"
                   className="bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300 border-zinc-800"
                 >
-                  {tag}
+                  <Link href={tagHref(tag)}>{tag}</Link>
                 </Badge>
               ))}
             </div>

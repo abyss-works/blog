@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blog
+  namespace: blog-prod
+data:
+  NODE_ENV: production
+  PORT: "3000"
+  HOSTNAME: "0.0.0.0"
+  BETTER_AUTH_URL: https://blog.abyssworks.dev

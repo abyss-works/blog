@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: blog-prod
+  labels:
+    app: postgres
+    project: blog
+    environment: prod
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: postgres
+      project: blog
+      environment: prod
+  template:
+    metadata:
+      labels:
+        app: postgres
+        project: blog
+        environment: prod
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: oci-node
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          envFrom:
+            - configMapRef:
+                name: postgres
+            - secretRef:
+                name: postgres
+          ports:
+            - containerPort: 5432
+          startupProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            periodSeconds: 5
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: postgres-pvc

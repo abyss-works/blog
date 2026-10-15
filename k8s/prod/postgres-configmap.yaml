@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres
+  namespace: blog-prod
+data:
+  POSTGRES_DB: blog

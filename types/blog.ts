@@ -3,10 +3,11 @@ export interface BlogMeta {
   description: string;
   date: string;
   tags: string[];
+  category?: string;
 }
 
 export interface BlogPost extends BlogMeta {
   id: string;
-  slug: string;
+  slug?: string;
   content?: string;
 }

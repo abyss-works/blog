@@ -10,14 +10,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { BlogPost } from "@/types/blog";
 import { CalendarIcon } from "lucide-react";
+import { categoryHref, tagHref } from "@/lib/utils";
 
 interface PostCardProps {
   post: BlogPost;
 }
 
 export function PostCard({ post }: PostCardProps) {
+  const href = post.slug ? `/posts/${post.slug}-${post.id}` : `/posts/${post.id}`;
   return (
-    <Link href={`/posts/${post.slug}`} className="block group">
+    <div className="relative group">
       <Card className="h-full border-zinc-800 bg-zinc-950/50 transition-colors hover:border-zinc-700 hover:bg-zinc-900/50">
         <CardHeader>
           <div className="flex items-center justify-between mb-2">
@@ -25,9 +27,23 @@ export function PostCard({ post }: PostCardProps) {
               <CalendarIcon className="mr-1 h-3 w-3" />
               {post.date}
             </div>
+            {post.category && (
+              <Link
+                href={categoryHref(post.category)}
+                className="relative z-10 text-xs text-zinc-400 hover:text-zinc-200 transition-colors"
+              >
+                {post.category}
+              </Link>
+            )}
           </div>
           <CardTitle className="text-xl font-semibold text-zinc-100 group-hover:text-white transition-colors">
-            {post.title}
+            {/* 카드 전체를 덮는 링크: 태그 링크와 중첩되지 않도록 제목에만 둔다 */}
+            <Link
+              href={href}
+              className="outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:ring-[3px] focus-visible:after:ring-zinc-400/50"
+            >
+              {post.title}
+            </Link>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -39,14 +55,15 @@ export function PostCard({ post }: PostCardProps) {
           {post.tags.map((tag) => (
             <Badge
               key={tag}
+              asChild
               variant="secondary"
-              className="bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300 border-zinc-800"
+              className="relative z-10 bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300 border-zinc-800"
             >
-              {tag}
+              <Link href={tagHref(tag)}>{tag}</Link>
             </Badge>
           ))}
         </CardFooter>
       </Card>
-    </Link>
+    </div>
   );
 }

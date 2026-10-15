@@ -11,32 +11,39 @@ function toBlogMeta(post: PostModel): BlogMeta {
       ? post.date.toISOString().split("T")[0]
       : post.createdAt.toISOString().split("T")[0],
     tags: post.tags,
+    category: post.category ?? undefined,
   };
 }
 
-export async function getPosts(): Promise<BlogPost[]> {
+export async function getPosts(
+  filter: { tag?: string; category?: string } = {},
+): Promise<BlogPost[]> {
   const posts: PostModel[] = await prisma.post.findMany({
-    where: { status: PostStatus.PUBLISHED },
+    where: {
+      status: PostStatus.PUBLISHED,
+      ...(filter.tag !== undefined && { tags: { has: filter.tag } }),
+      ...(filter.category !== undefined && { category: filter.category }),
+    },
     orderBy: { date: "desc" },
   });
 
   return posts.map((p) => ({
-    id: p.id,
-    slug: p.slug,
+    id: p.urlId,
+    slug: p.slug ?? undefined,
     ...toBlogMeta(p),
   }));
 }
 
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+export async function getPostByUrlId(urlId: string): Promise<BlogPost | null> {
   const post: PostModel | null = await prisma.post.findFirst({
-    where: { slug, status: PostStatus.PUBLISHED },
+    where: { urlId, status: PostStatus.PUBLISHED },
   });
 
   if (!post) return null;
 
   return {
-    id: post.id,
-    slug: post.slug,
+    id: post.urlId,
+    slug: post.slug ?? undefined,
     content: post.content ?? undefined,
     ...toBlogMeta(post),
   };

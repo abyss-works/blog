@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: blog-stage
+  namespace: argocd
+spec:
+  destination:
+    namespace: blog-stage
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: k8s/stage
+    repoURL: https://github.com/abyss-works/blog
+    targetRevision: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

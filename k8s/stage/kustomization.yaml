@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# prod 구성을 그대로 쓰고 네임스페이스·환경 라벨·도메인만 바꾼다.
+namespace: blog-stage
+resources:
+  - ../prod
+labels:
+  - pairs:
+      environment: stage
+    includeSelectors: true
+    includeTemplates: true
+  - pairs:
+      abyssworks.dev/environment: stage
+patches:
+  - target:
+      kind: Namespace
+      name: blog-prod
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: blog-stage
+  - target:
+      kind: ConfigMap
+      name: blog
+    patch: |-
+      - op: replace
+        path: /data/BETTER_AUTH_URL
+        value: https://blog-stage.abyssworks.dev
+  - target:
+      kind: Ingress
+      name: blog
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: blog-stage.abyssworks.dev
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: blog-stage.abyssworks.dev
+  - target:
+      kind: Certificate
+      name: blog-tls
+    patch: |-
+      - op: replace
+        path: /spec/dnsNames/0
+        value: blog-stage.abyssworks.dev
