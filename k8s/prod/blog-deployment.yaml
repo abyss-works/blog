@@ -71,3 +71,4 @@ spec:
               path: /
               port: 3000
             periodSeconds: 10
+            timeoutSeconds: 5
