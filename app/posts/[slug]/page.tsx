@@ -4,7 +4,7 @@ import { getPostByUrlId } from "@/services/post";
 import { PostContent } from "@/components/blocks/post-content";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeftIcon, CalendarIcon } from "lucide-react";
-import { tagHref } from "@/lib/utils";
+import { categoryHref, tagHref } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +45,14 @@ export default async function PostPage({ params }: PageProps) {
               <CalendarIcon className="h-4 w-4" />
               {post.date}
             </div>
+            {post.category && (
+              <Link
+                href={categoryHref(post.category)}
+                className="text-zinc-400 hover:text-zinc-200 transition-colors"
+              >
+                {post.category}
+              </Link>
+            )}
           </div>
           {post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
