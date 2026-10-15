@@ -14,7 +14,6 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/", label: "Posts" },
   { href: "/tags", label: "Tags" },
   { href: "/categories", label: "Categories" },
-  { href: "/about", label: "About" },
 ];
 
 export async function SiteHeader() {
