@@ -14,9 +14,12 @@ function toBlogMeta(post: PostModel): BlogMeta {
   };
 }
 
-export async function getPosts(): Promise<BlogPost[]> {
+export async function getPosts(filter: { tag?: string } = {}): Promise<BlogPost[]> {
   const posts: PostModel[] = await prisma.post.findMany({
-    where: { status: PostStatus.PUBLISHED },
+    where: {
+      status: PostStatus.PUBLISHED,
+      ...(filter.tag !== undefined && { tags: { has: filter.tag } }),
+    },
     orderBy: { date: "desc" },
   });
 

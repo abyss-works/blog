@@ -4,6 +4,7 @@ import { getPostByUrlId } from "@/services/post";
 import { PostContent } from "@/components/blocks/post-content";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeftIcon, CalendarIcon } from "lucide-react";
+import { tagHref } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -50,10 +51,11 @@ export default async function PostPage({ params }: PageProps) {
               {post.tags.map((tag) => (
                 <Badge
                   key={tag}
+                  asChild
                   variant="secondary"
                   className="bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300 border-zinc-800"
                 >
-                  {tag}
+                  <Link href={tagHref(tag)}>{tag}</Link>
                 </Badge>
               ))}
             </div>
