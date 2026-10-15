@@ -59,6 +59,16 @@ export async function getTaxonomy(): Promise<{
   };
 }
 
+/** 날짜 내림차순 목록에서 양옆 글. prev는 더 오래된 글, next는 더 새 글. */
+export async function getAdjacentPosts(
+  urlId: string,
+): Promise<{ prev: BlogPost | null; next: BlogPost | null }> {
+  const posts = await getPosts();
+  const i = posts.findIndex((p) => p.id === urlId);
+  if (i < 0) return { prev: null, next: null };
+  return { prev: posts[i + 1] ?? null, next: posts[i - 1] ?? null };
+}
+
 export async function getPostByUrlId(urlId: string): Promise<BlogPost | null> {
   const post: PostModel | null = await prisma.post.findFirst({
     where: { urlId, status: PostStatus.PUBLISHED },
