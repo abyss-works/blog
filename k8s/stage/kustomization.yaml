@@ -45,4 +45,4 @@ patches:
         value: blog-stage.abyssworks.dev
 images:
   - name: localhost:5000/blog
-    newTag: git-fbe49ed
+    newTag: git-afbad91
