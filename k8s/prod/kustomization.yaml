@@ -18,5 +18,5 @@ resources:
   - certificate.yaml
 images:
   - name: registry.abyssworks.dev/blog
-    newName: registry.abyssworks.dev/blog
-    newTag: git-fe98e51
+    newName: localhost:5000/blog
+    newTag: git-fbe49ed
