@@ -8,3 +8,4 @@ node_modules
 .env.*.local
 k8s/prod/postgres-secret.local.yaml
 k8s/prod/better-auth-secret.local.yaml
+lib/generated
