@@ -1,4 +1,5 @@
 import { Heading } from "@/lib/markdown";
+import { Eyebrow } from "@/components/layout/eyebrow";
 
 interface TocProps {
   headings: Heading[];
@@ -12,9 +13,7 @@ export function Toc({ headings }: TocProps) {
       aria-label="목차"
       className="hidden xl:block absolute top-10 left-full ml-12 w-56 text-sm"
     >
-      <p className="mb-3 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
-        Contents
-      </p>
+      <Eyebrow className="mb-3">Contents</Eyebrow>
       <ul className="flex flex-col gap-1.5 border-l border-border">
         {headings.map((h) => (
           <li key={h.id} className={h.depth === 3 ? "pl-6" : "pl-3"}>
