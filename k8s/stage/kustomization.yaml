@@ -43,6 +43,3 @@ patches:
       - op: replace
         path: /spec/dnsNames/0
         value: blog-stage.abyssworks.dev
-images:
-  - name: localhost:5000/blog
-    newTag: git-afbad91

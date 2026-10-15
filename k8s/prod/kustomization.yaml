@@ -17,6 +17,5 @@ resources:
   - ingress.yaml
   - certificate.yaml
 images:
-  - name: registry.abyssworks.dev/blog
-    newName: localhost:5000/blog
+  - name: ghcr.io/abyss-works/blog
     newTag: git-fbe49ed
