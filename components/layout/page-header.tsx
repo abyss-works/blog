@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Eyebrow } from "@/components/layout/eyebrow";
 
 interface PageHeaderProps {
   eyebrow?: string;
@@ -25,9 +26,7 @@ export function PageHeader({
     >
       <div className="min-w-0">
         {eyebrow && (
-          <p className="mb-3 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
-            {eyebrow}
-          </p>
+          <Eyebrow className="mb-3">{eyebrow}</Eyebrow>
         )}
         <h1 className="text-3xl leading-tight font-bold tracking-tight break-words">
           {title}

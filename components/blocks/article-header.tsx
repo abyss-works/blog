@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Eyebrow } from "@/components/layout/eyebrow";
 import { BlogPost } from "@/types/blog";
 import { categoryHref, formatMonth, tagHref } from "@/lib/utils";
 
@@ -18,7 +19,7 @@ export function ArticleHeader({ post }: ArticleHeaderProps) {
         <ArrowLeftIcon aria-hidden="true" className="size-4" />
         Posts
       </Link>
-      <p className="mb-3 flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
+      <Eyebrow className="mb-3 flex flex-wrap items-center gap-2">
         <time dateTime={post.date}>{formatMonth(post.date)}</time>
         {post.category && (
           <>
@@ -28,7 +29,7 @@ export function ArticleHeader({ post }: ArticleHeaderProps) {
             </Link>
           </>
         )}
-      </p>
+      </Eyebrow>
       <h1 className="text-3xl leading-tight font-bold tracking-tight break-words md:text-4xl">
         {post.title}
       </h1>
