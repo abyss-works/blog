@@ -8,3 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function tagHref(tag: string) {
   return `/tags/${encodeURIComponent(tag)}`
 }
+
+export function categoryHref(category: string) {
+  return `/categories/${encodeURIComponent(category)}`
+}

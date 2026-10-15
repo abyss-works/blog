@@ -11,6 +11,7 @@ const createPostSchema = z.object({
   content: z.string().min(1),
   slug: z.string().trim().optional(),
   tags: z.array(z.string().trim().min(1)).default([]),
+  category: z.string().trim().max(50).optional(),
 });
 
 function toKebab(title: string): string {
@@ -43,7 +44,14 @@ export const POST = withAuth(async (request, _context, session) => {
     );
   }
 
-  const { title, description, content, slug: clientSlug, tags } = parsed.data;
+  const {
+    title,
+    description,
+    content,
+    slug: clientSlug,
+    tags,
+    category,
+  } = parsed.data;
 
   try {
     const uuid = crypto.randomUUID();
@@ -57,6 +65,7 @@ export const POST = withAuth(async (request, _context, session) => {
         description: description ?? "",
         content,
         tags,
+        category: category || null,
         status: PostStatus.PUBLISHED,
         authorId: session.user.id,
       },

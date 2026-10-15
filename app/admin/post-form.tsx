@@ -26,6 +26,7 @@ export function PostForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
+  const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -45,6 +46,7 @@ export function PostForm() {
         title,
         description,
         content,
+        category,
         tags: tags
           .split(",")
           .map((t) => t.trim())
@@ -77,7 +79,7 @@ export function PostForm() {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="space-y-2">
           <Label htmlFor="description">설명</Label>
           <Input
@@ -85,6 +87,16 @@ export function PostForm() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Brief description..."
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="category">카테고리</Label>
+          <Input
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            placeholder="Engineering"
+            maxLength={50}
           />
         </div>
         <div className="space-y-2">

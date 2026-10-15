@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { BlogPost } from "@/types/blog";
 import { CalendarIcon } from "lucide-react";
-import { tagHref } from "@/lib/utils";
+import { categoryHref, tagHref } from "@/lib/utils";
 
 interface PostCardProps {
   post: BlogPost;
@@ -27,6 +27,14 @@ export function PostCard({ post }: PostCardProps) {
               <CalendarIcon className="mr-1 h-3 w-3" />
               {post.date}
             </div>
+            {post.category && (
+              <Link
+                href={categoryHref(post.category)}
+                className="relative z-10 text-xs text-zinc-400 hover:text-zinc-200 transition-colors"
+              >
+                {post.category}
+              </Link>
+            )}
           </div>
           <CardTitle className="text-xl font-semibold text-zinc-100 group-hover:text-white transition-colors">
             {/* 카드 전체를 덮는 링크: 태그 링크와 중첩되지 않도록 제목에만 둔다 */}
