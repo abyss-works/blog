@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { PenLineIcon } from "lucide-react";
 import { getSession } from "@/lib/dal";
 import { Container } from "@/components/layout/container";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { UserMenu } from "@/components/layout/user-menu";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export interface NavItem {
@@ -17,11 +17,9 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export async function SiteHeader() {
-  // 링크 표시만 결정한다. 인가는 각 진입점이 소유한다.
+  // 계정 메뉴 표시만 결정한다. 인가는 각 진입점이 소유한다.
   const session = await getSession();
-  const items = session
-    ? [...NAV_ITEMS, { href: "/admin", label: "글쓰기" }]
-    : NAV_ITEMS;
+  const items = NAV_ITEMS;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
@@ -45,9 +43,6 @@ export async function SiteHeader() {
                   href={item.href}
                   className="inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                 >
-                  {item.href === "/admin" && (
-                    <PenLineIcon aria-hidden="true" className="size-4" />
-                  )}
                   {item.label}
                 </Link>
               </li>
@@ -57,6 +52,7 @@ export async function SiteHeader() {
 
         <div className="flex items-center gap-1 md:ml-2 max-md:ml-auto">
           <ThemeToggle />
+          <UserMenu email={session?.user.email ?? null} />
           <MobileNav items={items} />
         </div>
       </Container>
