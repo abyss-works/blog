@@ -64,6 +64,8 @@ spec:
             tcpSocket:
               port: 3000
             periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /
