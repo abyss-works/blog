@@ -40,7 +40,13 @@ page "/categories" 200
 page "/about" 200
 page "/sign-in" 200
 page "/nope-$(date +%s)" 404
-page "/posts/nope-$(date +%s)" 404
+
+# 동적 페이지의 notFound()는 최소 HTML 셸과 RSC 페이로드로 응답하고 브라우저가 not-found UI를 그린다.
+# 서버 HTML에는 랜드마크가 없으므로 상태 코드와 문구만 확인한다.
+echo "[/posts/nope] 없는 글"
+nf="$(curl -s -o - -w '\n%{http_code}' "$BASE/posts/nope-$(date +%s)")"
+check "status" "404" "${nf##*$'\n'}"
+check "contains not-found text" "1" "$(grep -c '페이지를 찾을 수 없습니다' <<<"$nf" | awk '{print ($1>0)?1:0}')"
 
 if [ -n "${POST_PATH:-}" ]; then page "$POST_PATH" 200 '<article'; else skip_ "POST_PATH 미지정: 글 페이지"; fi
 if [ -n "${TAG_PATH:-}" ]; then page "$TAG_PATH" 200; else skip_ "TAG_PATH 미지정: 태그 페이지"; fi

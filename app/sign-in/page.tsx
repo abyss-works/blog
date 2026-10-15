@@ -40,10 +40,12 @@ export default function SignInPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
+    <div className="flex min-h-[60vh] items-center justify-center px-4 py-12">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>로그인</CardTitle>
+          <CardTitle>
+            <h1>로그인</h1>
+          </CardTitle>
           <CardDescription>
             계정이 없으면 첫 로그인 시 생성됩니다.
           </CardDescription>
@@ -86,6 +88,6 @@ export default function SignInPage() {
           </form>
         </CardContent>
       </Card>
-    </main>
+    </div>
   );
 }
