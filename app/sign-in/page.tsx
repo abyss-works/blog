@@ -44,7 +44,7 @@ export default function SignInPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>
-            <h1>로그인</h1>
+            <h1>Sign in</h1>
           </CardTitle>
           <CardDescription>
             계정이 없으면 첫 로그인 시 생성됩니다.

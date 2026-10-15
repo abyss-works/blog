@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { SectionHeading } from "@/components/layout/section-heading";
 import { Count } from "@/types/blog";
 import { categoryHref, tagHref } from "@/lib/utils";
 
@@ -8,19 +9,11 @@ interface TaxonomyAsideProps {
   tags: Count[];
 }
 
-function GroupTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="mb-3 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
-      {children}
-    </h2>
-  );
-}
-
 export function TaxonomyAside({ categories, tags }: TaxonomyAsideProps) {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <GroupTitle>Categories</GroupTitle>
+        <SectionHeading>Categories</SectionHeading>
         {categories.length === 0 ? (
           <p className="text-sm text-muted-foreground">아직 카테고리가 없습니다.</p>
         ) : (
@@ -41,7 +34,7 @@ export function TaxonomyAside({ categories, tags }: TaxonomyAsideProps) {
       </section>
 
       <section>
-        <GroupTitle>Tags</GroupTitle>
+        <SectionHeading>Tags</SectionHeading>
         {tags.length === 0 ? (
           <p className="text-sm text-muted-foreground">아직 태그가 없습니다.</p>
         ) : (

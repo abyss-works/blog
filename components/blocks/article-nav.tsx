@@ -25,8 +25,8 @@ export function ArticleNav({ prev, next }: ArticleNavProps) {
   if (!prev && !next) return null;
   return (
     <nav aria-label="이전·다음 글" className="mt-12 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
-      {prev && <NavLink post={prev} label="이전 글" align="left" />}
-      {next && <NavLink post={next} label="다음 글" align="right" />}
+      {prev && <NavLink post={prev} label="Previous" align="left" />}
+      {next && <NavLink post={next} label="Next" align="right" />}
     </nav>
   );
 }
