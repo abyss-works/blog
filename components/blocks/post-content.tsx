@@ -46,6 +46,10 @@ function buildComponents(): Components {
         </code>
       );
     },
+    h1({ children }) {
+      // 페이지 제목이 h1이므로 본문의 h1은 h2 수준으로 낮춘다. 목차에는 넣지 않는다.
+      return <h2 className={`mt-10 mb-4 text-2xl ${headingClass}`}>{children}</h2>;
+    },
     h2({ children }) {
       return (
         <h2 id={nextId(slugify(textOf(children)))} className={`mt-10 mb-4 text-2xl ${headingClass}`}>
