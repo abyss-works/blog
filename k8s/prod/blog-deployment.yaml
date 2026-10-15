@@ -43,6 +43,8 @@ spec:
                 name: postgres
             - secretRef:
                 name: postgres
+            - secretRef:
+                name: better-auth
           ports:
             - containerPort: 3000
           resources:

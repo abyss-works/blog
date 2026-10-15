@@ -1,7 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import crypto from "crypto";
+import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { PostStatus } from "@/lib/generated/prisma/enums";
-import crypto from "crypto";
+import { withAuth } from "@/lib/with-auth";
+
+const createPostSchema = z.object({
+  title: z.string().trim().min(1),
+  description: z.string().trim().optional(),
+  content: z.string().min(1),
+  slug: z.string().trim().optional(),
+  tags: z.array(z.string().trim().min(1)).default([]),
+});
 
 function toKebab(title: string): string {
   const ascii = title.replace(/[^\x00-\x7F]/g, "");
@@ -17,39 +27,47 @@ function toKebab(title: string): string {
   return "";
 }
 
-export async function POST(req: NextRequest) {
+export const POST = withAuth(async (request, _context, session) => {
+  let body: unknown;
   try {
-    const body = await req.json();
-    const { slug: clientSlug, title, description, content, tags } = body;
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
 
-    if (!title || !content) {
-      return NextResponse.json(
-        { error: "title, content are required" },
-        { status: 400 }
-      );
-    }
+  const parsed = createPostSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Invalid request body", issues: parsed.error.issues },
+      { status: 400 },
+    );
+  }
 
+  const { title, description, content, slug: clientSlug, tags } = parsed.data;
+
+  try {
     const uuid = crypto.randomUUID();
-    const urlId = uuid.substring(0, 8);
-    const kebab = clientSlug || toKebab(title);
-    const slug = kebab || null;
 
     const post = await prisma.post.create({
       data: {
         id: uuid,
-        urlId,
-        slug,
+        urlId: uuid.substring(0, 8),
+        slug: clientSlug || toKebab(title) || null,
         title,
         description: description ?? "",
         content,
-        tags: tags ?? [],
+        tags,
         status: PostStatus.PUBLISHED,
+        authorId: session.user.id,
       },
     });
 
     return NextResponse.json({ ok: true, id: post.urlId, slug: post.slug });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("failed to create post", e);
+    return NextResponse.json(
+      { error: "Failed to create post" },
+      { status: 500 },
+    );
   }
-}
+});
