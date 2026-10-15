@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getPosts } from "@/services/post";
-import { PostList } from "@/components/blocks/post-list";
+import { PostGrid } from "@/components/blocks/post-grid";
 import { ArrowLeftIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -28,7 +28,7 @@ export default async function TagPage({ params }: PageProps) {
           {tag}
         </h1>
         {posts.length > 0 ? (
-          <PostList posts={posts} />
+          <PostGrid posts={posts} emptyText="이 분류의 글이 없습니다." />
         ) : (
           <p className="text-zinc-500">이 태그의 글이 없습니다.</p>
         )}
