@@ -25,7 +25,7 @@ spec:
         kubernetes.io/hostname: oci-node
       containers:
         - name: blog
-          image: registry.abyssworks.dev/blog:latest
+          image: ghcr.io/abyss-works/blog:latest
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
