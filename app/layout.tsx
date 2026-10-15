@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     default: "Abyssworks Studio",
     template: "%s · Abyssworks Studio",
   },
-  description: "Solutions against the Depth of Logic",
+  description: "Solutions against the Deep",
 };
 
 export default function RootLayout({

@@ -10,7 +10,7 @@ export function Hero() {
           Abyssworks Studio
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg font-light tracking-wide text-muted-foreground md:text-xl">
-          Solutions against the Depth of Logic
+          Solutions against the Deep
         </p>
       </Container>
     </section>

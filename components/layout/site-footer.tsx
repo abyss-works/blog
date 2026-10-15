@@ -26,7 +26,7 @@ export function SiteFooter() {
             Abyssworks
           </p>
           <p className="text-xs text-muted-foreground">
-            Solutions against the Depth of Logic
+            Solutions against the Deep
           </p>
         </div>
         <nav aria-label="푸터">
