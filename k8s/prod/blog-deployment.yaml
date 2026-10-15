@@ -22,7 +22,7 @@ spec:
         environment: prod
     spec:
       nodeSelector:
-        kubernetes.io/hostname: abyssworks
+        kubernetes.io/hostname: oci-node
       containers:
         - name: blog
           image: registry.abyssworks.dev/blog:latest

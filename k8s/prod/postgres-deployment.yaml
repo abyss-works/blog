@@ -24,7 +24,7 @@ spec:
         environment: prod
     spec:
       nodeSelector:
-        kubernetes.io/hostname: abyssworks
+        kubernetes.io/hostname: oci-node
       containers:
         - name: postgres
           image: postgres:16-alpine
