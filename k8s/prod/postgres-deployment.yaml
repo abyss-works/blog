@@ -59,6 +59,7 @@ spec:
                 - -c
                 - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
             periodSeconds: 5
+            timeoutSeconds: 5
           resources:
             requests:
               cpu: 100m
