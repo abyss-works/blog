@@ -9,7 +9,7 @@ export default function AboutPage() {
     <Container size="narrow" className="pb-8">
       <PageHeader
         title="About"
-        description="Solutions against the Depth of Logic"
+        description="Solutions against the Deep"
       />
       <div className="text-[17px] leading-[1.75] text-foreground/90">
         <p className="mb-5">
