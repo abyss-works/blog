@@ -6,7 +6,7 @@ interface WaveBackgroundProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function WaveBackground({ className, ...props }: WaveBackgroundProps) {
   return (
-    <div aria-hidden="true" className={cn("absolute inset-0 overflow-hidden pointer-events-none", className)} {...props}>
+    <div aria-hidden="true" className={cn("absolute inset-x-0 top-0 bottom-0 overflow-hidden pointer-events-none", className)} {...props}>
       {/* Top Wave */}
       <svg
         className="absolute top-0 left-0 w-full h-[35%] rotate-180"
