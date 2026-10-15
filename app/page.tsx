@@ -1,61 +1,33 @@
-import { getPosts } from "@/services/post";
-import { PostList } from "@/components/blocks/post-list";
-import Link from "next/link";
-import { PlusIcon } from "lucide-react";
-import { WaveBackground } from "@/components/ui/wave-background";
+import { getPosts, getTaxonomy } from "@/services/post";
+import { Container } from "@/components/layout/container";
+import { SectionHeading } from "@/components/layout/section-heading";
+import { WithAside } from "@/components/layout/with-aside";
+import { Hero } from "@/components/blocks/hero";
+import { PostGrid } from "@/components/blocks/post-grid";
+import { TaxonomyAside } from "@/components/blocks/taxonomy-aside";
 
-// Server Component
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  // DAL: Fetch data securely on the server
-  // This data is never exposed directly to the client as raw JSON,
-  // only rendered HTML or serialized props for specific components.
-  const posts = await getPosts();
+  const [posts, taxonomy] = await Promise.all([getPosts(), getTaxonomy()]);
 
   return (
-    <main className="min-h-screen bg-[#050505] text-zinc-100 selection:bg-zinc-800 selection:text-white">
-      {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center py-32 px-4 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-800/10 via-transparent to-transparent opacity-50" />
-        <WaveBackground className="opacity-40" />
-        
-        <h1 className="relative z-10 text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent">
-          Abyssworks Studio
-        </h1>
-        
-        <p className="relative z-10 text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto font-light tracking-wide">
-          Solutions against the Depth of Logic
-        </p>
-        
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
-      </section>
-
-      {/* Blog Posts Section */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-2xl font-semibold tracking-tight">Latest Insights</h2>
-          <div className="h-px flex-1 bg-zinc-900 ml-6" />
-        </div>
-        
-        <PostList posts={posts} />
-      </section>
-      
-      {/* FAB — New Post */}
-      <Link
-        href="/admin"
-        className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-100 text-zinc-900 shadow-lg hover:bg-zinc-300 transition-colors"
-        aria-label="New Post"
-      >
-        <PlusIcon className="h-6 w-6" />
-      </Link>
-      
-      {/* Footer */}
-      <footer className="border-t border-zinc-900 py-12 mt-12">
-        <div className="container mx-auto px-4 text-center text-zinc-600 text-sm">
-          <p>&copy; {new Date().getFullYear()} Abyssworks Studio. All rights reserved.</p>
-        </div>
-      </footer>
-    </main>
+    <>
+      <Hero />
+      <Container className="py-12">
+        <WithAside
+          asideLabel="분류"
+          aside={
+            <TaxonomyAside
+              categories={taxonomy.categories}
+              tags={taxonomy.tags}
+            />
+          }
+        >
+          <SectionHeading>최신 글</SectionHeading>
+          <PostGrid posts={posts} columns={2} emptyText="아직 글이 없습니다." />
+        </WithAside>
+      </Container>
+    </>
   );
 }

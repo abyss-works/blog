@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { getPostByUrlId } from "@/services/post";
+import type { Metadata } from "next";
+import { getAdjacentPosts, getPostByUrlId } from "@/services/post";
+import { extractHeadings } from "@/lib/markdown";
+import { Container } from "@/components/layout/container";
+import { ArticleHeader } from "@/components/blocks/article-header";
+import { ArticleNav } from "@/components/blocks/article-nav";
 import { PostContent } from "@/components/blocks/post-content";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeftIcon, CalendarIcon } from "lucide-react";
-import { categoryHref, tagHref } from "@/lib/utils";
+import { Toc } from "@/components/blocks/toc";
 
 export const dynamic = "force-dynamic";
 
@@ -12,67 +14,32 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default async function PostPage({ params }: PageProps) {
-  const { slug } = await params;
-  // URL format: /posts/{slug}-{urlId} or /posts/{urlId}
-  // Extract last 8 chars as urlId
-  const urlId = slug.length >= 8 ? slug.slice(-8) : slug;
-  const post = await getPostByUrlId(urlId);
+// URL 형식: /posts/{slug}-{urlId} 또는 /posts/{urlId}. 마지막 8자가 urlId다.
+function urlIdOf(slug: string) {
+  return slug.length >= 8 ? slug.slice(-8) : slug;
+}
 
-  if (!post) {
-    notFound();
-  }
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const post = await getPostByUrlId(urlIdOf((await params).slug));
+  return post ? { title: post.title, description: post.description } : {};
+}
+
+export default async function PostPage({ params }: PageProps) {
+  const urlId = urlIdOf((await params).slug);
+  const post = await getPostByUrlId(urlId);
+  if (!post) notFound();
+
+  const { prev, next } = await getAdjacentPosts(urlId);
+  const headings = extractHeadings(post.content ?? "");
 
   return (
-    <main className="min-h-screen bg-[#050505] text-zinc-100 selection:bg-zinc-800 selection:text-white">
-      <article className="container mx-auto max-w-3xl px-4 py-16">
-        {/* Back link */}
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
-        >
-          <ArrowLeftIcon className="h-4 w-4" />
-          Back to posts
-        </Link>
-
-        {/* Header */}
-        <header className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-            {post.title}
-          </h1>
-          <div className="flex items-center gap-4 text-sm text-zinc-500">
-            <div className="flex items-center gap-1">
-              <CalendarIcon className="h-4 w-4" />
-              {post.date}
-            </div>
-            {post.category && (
-              <Link
-                href={categoryHref(post.category)}
-                className="text-zinc-400 hover:text-zinc-200 transition-colors"
-              >
-                {post.category}
-              </Link>
-            )}
-          </div>
-          {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {post.tags.map((tag) => (
-                <Badge
-                  key={tag}
-                  asChild
-                  variant="secondary"
-                  className="bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300 border-zinc-800"
-                >
-                  <Link href={tagHref(tag)}>{tag}</Link>
-                </Badge>
-              ))}
-            </div>
-          )}
-        </header>
-
-        {/* Content */}
+    <Container size="narrow" className="relative pb-8">
+      <article>
+        <ArticleHeader post={post} />
+        <Toc headings={headings} />
         {post.content && <PostContent content={post.content} />}
       </article>
-    </main>
+      <ArticleNav prev={prev} next={next} />
+    </Container>
   );
 }
