@@ -47,15 +47,7 @@ export function SignInForm({ googleEnabled }: SignInFormProps) {
     setError("");
 
     const signIn = await authClient.signIn.email({ email, password });
-    if (!signIn.error) {
-      router.push("/admin");
-      router.refresh();
-      return;
-    }
-
-    // 계정이 하나도 없을 때만 가입이 허용된다. 그 외에는 서버가 거부한다.
-    const signUp = await authClient.signUp.email({ email, password, name: email });
-    if (signUp.error) {
+    if (signIn.error) {
       setError(signIn.error.message ?? "로그인에 실패했습니다.");
       setPending(false);
       return;
