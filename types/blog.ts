@@ -11,3 +11,9 @@ export interface BlogPost extends BlogMeta {
   slug?: string;
   content?: string;
 }
+
+/** 태그·카테고리 이름과 글 수 */
+export interface Count {
+  name: string;
+  count: number;
+}
