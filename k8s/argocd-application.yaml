@@ -7,7 +7,7 @@ spec:
   destination:
     namespace: blog-prod
     server: https://kubernetes.default.svc
-  project: default
+  project: blog
   source:
     path: k8s/prod
     repoURL: https://github.com/abyss-works/blog
