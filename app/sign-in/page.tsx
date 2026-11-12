@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SignInForm } from "./sign-in-form";
 
 export const metadata: Metadata = { title: "Sign in" };
@@ -17,9 +17,6 @@ export default function SignInPage() {
           <CardTitle>
             <h1>Sign in</h1>
           </CardTitle>
-          <CardDescription>
-            계정이 없으면 첫 로그인 시 생성됩니다.
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <SignInForm googleEnabled={googleEnabled} />
