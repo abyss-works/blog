@@ -13,7 +13,7 @@ interface UserMenuProps {
 }
 
 const itemClass =
-  "flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50";
+  "flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-[13px] text-body-secondary transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function UserMenu({ email }: UserMenuProps) {
   // 연 시점의 경로를 기억해 경로가 바뀌면 닫힌 상태가 된다.
@@ -44,7 +44,7 @@ export function UserMenu({ email }: UserMenuProps) {
     return (
       <Button asChild variant="ghost" size="icon" aria-label="Sign in">
         <Link href="/sign-in">
-          <UserIcon aria-hidden="true" />
+          <UserIcon aria-hidden="true" className="size-[15px]" />
         </Link>
       </Button>
     );
@@ -61,16 +61,18 @@ export function UserMenu({ email }: UserMenuProps) {
         aria-controls={panelId}
         onClick={() => setOpenedAt(open ? null : pathname)}
       >
-        <UserIcon aria-hidden="true" />
+        <UserIcon aria-hidden="true" className="size-[15px]" />
       </Button>
       <div
         id={panelId}
         hidden={!open}
-        className="absolute top-full right-0 mt-2 w-60 rounded-xl border border-border bg-background p-1 shadow-md"
+        className="absolute top-full right-0 mt-2.5 w-56 rounded-lg border border-border-strong bg-popover p-1.5 shadow-lg"
       >
-        <p className="truncate px-3 py-2 text-xs text-muted-foreground">{email}</p>
+        <p className="mb-1 truncate border-b border-border px-2.5 py-2 font-mono text-[11.5px] text-muted-foreground">
+          {email}
+        </p>
         <Link href="/admin" className={itemClass}>
-          <PenLineIcon aria-hidden="true" className="size-4" />
+          <PenLineIcon aria-hidden="true" className="size-3.5" />
           New Post
         </Link>
         <SignOutButton className={itemClass} />
