@@ -18,4 +18,4 @@ resources:
   - certificate.yaml
 images:
   - name: ghcr.io/abyss-works/blog
-    newTag: git-e527492
+    newTag: git-2e383d2
