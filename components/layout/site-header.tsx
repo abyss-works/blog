@@ -17,42 +17,6 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/categories", label: "Categories" },
 ];
 
-function BrandMark() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
-      aria-hidden="true"
-      className="text-mineral"
-    >
-      <rect
-        x="1.5"
-        y="1.5"
-        width="15"
-        height="15"
-        rx="3"
-        stroke="currentColor"
-        strokeWidth="1.35"
-      />
-      <path
-        d="M5.4 12.2L9 5.8L12.6 12.2"
-        stroke="currentColor"
-        strokeWidth="1.35"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M7 10.1H11"
-        stroke="currentColor"
-        strokeWidth="1.35"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 export async function SiteHeader() {
   // 계정 메뉴 표시만 결정한다. 인가는 각 진입점이 소유한다.
   const session = await getSession();
@@ -63,9 +27,8 @@ export async function SiteHeader() {
       <Container className="flex h-full items-center gap-7">
         <Link
           href="/"
-          className="inline-flex items-center gap-2.5 text-[14.5px] font-semibold tracking-[-0.02em] text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
+          className="text-[14.5px] font-semibold tracking-[-0.02em] text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
         >
-          <BrandMark />
           Abyssworks
         </Link>
 
