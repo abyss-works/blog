@@ -1,6 +1,6 @@
-// 목차 추출 검증. 실행: pnpm exec tsx scripts/verify-markdown.ts
+// 목차 추출 및 읽기 시간 계산 검증. 실행: pnpm exec tsx scripts/verify-markdown.ts
 import assert from "node:assert/strict";
-import { extractHeadings, slugify } from "../lib/markdown";
+import { estimateReadingMinutes, extractHeadings, slugify } from "../lib/markdown";
 
 // 펜스 안의 ## 는 제목이 아니고, h1은 목차에 넣지 않는다.
 const a = extractHeadings(
@@ -25,4 +25,11 @@ assert.deepEqual(
 assert.equal(slugify("!!!"), "section");
 assert.equal(slugify("  Hello, World! "), "hello-world");
 
-console.log("verify-markdown: PASS 4");
+// 읽기 시간 계산: 빈 입력은 0, 짧은 본문은 최소 1분, 긴 본문은 분 단위로 반올림한다.
+assert.equal(estimateReadingMinutes(""), 0);
+assert.equal(estimateReadingMinutes(null), 0);
+assert.equal(estimateReadingMinutes("짧은 문장입니다."), 1);
+assert.equal(estimateReadingMinutes("가".repeat(800)), 2);
+assert.equal(estimateReadingMinutes("word ".repeat(660)), 3);
+
+console.log("verify-markdown: PASS 9");

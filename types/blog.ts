@@ -4,6 +4,7 @@ export interface BlogMeta {
   date: string;
   tags: string[];
   category?: string;
+  readingMinutes?: number;
 }
 
 export interface BlogPost extends BlogMeta {

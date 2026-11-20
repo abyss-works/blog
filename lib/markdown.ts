@@ -53,3 +53,25 @@ export function extractHeadings(markdown: string): Heading[] {
   }
   return headings;
 }
+
+/** 마크다운 본문의 예상 읽기 시간(분)을 계산한다. 빈 문자열은 0을 반환한다. */
+export function estimateReadingMinutes(
+  markdown: string | null | undefined,
+): number {
+  if (!markdown) return 0;
+  const plain = markdown
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/~~~[\s\S]*?~~~/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/[#>*_~\-|]/g, " ");
+
+  const cjkChars = (plain.match(/[\p{Script=Hangul}\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu) ?? []).length;
+  const latinWords = (plain.match(/[A-Za-z0-9]+/g) ?? []).length;
+  if (cjkChars === 0 && latinWords === 0) return 0;
+
+  // 한국어 분당 ~400자, 영문 분당 ~220단어 기준
+  const minutes = cjkChars / 400 + latinWords / 220;
+  return Math.max(1, Math.round(minutes));
+}
