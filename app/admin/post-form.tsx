@@ -68,8 +68,10 @@ export function PostForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="title">제목</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="title" className="text-[13px] text-body-secondary">
+          제목
+        </Label>
         <Input
           id="title"
           value={title}
@@ -79,9 +81,11 @@ export function PostForm() {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="space-y-2">
-          <Label htmlFor="description">설명</Label>
+      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-3">
+        <div className="space-y-1.5">
+          <Label htmlFor="description" className="text-[13px] text-body-secondary">
+            설명
+          </Label>
           <Input
             id="description"
             value={description}
@@ -89,8 +93,10 @@ export function PostForm() {
             placeholder="Brief description..."
           />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="category">카테고리</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="category" className="text-[13px] text-body-secondary">
+            카테고리
+          </Label>
           <Input
             id="category"
             value={category}
@@ -99,8 +105,10 @@ export function PostForm() {
             maxLength={50}
           />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="tags">태그 (쉼표 구분)</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="tags" className="text-[13px] text-body-secondary">
+            태그 (쉼표 구분)
+          </Label>
           <Input
             id="tags"
             value={tags}
@@ -110,10 +118,12 @@ export function PostForm() {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="content">본문 (Markdown)</Label>
-          <span className="text-xs text-muted-foreground">
+      <div className="space-y-1.5">
+        <div className="flex items-baseline justify-between">
+          <Label htmlFor="content" className="text-[13px] text-body-secondary">
+            본문 (Markdown)
+          </Label>
+          <span className="font-mono text-[11.5px] tabular-nums text-muted-foreground">
             {content.length} chars
           </span>
         </div>
@@ -123,7 +133,7 @@ export function PostForm() {
           onChange={(e) => setContent(e.target.value)}
           placeholder="Write your post in markdown..."
           rows={16}
-          className="resize-y font-mono"
+          className="min-h-72 resize-y font-mono text-[13.5px] leading-[1.7]"
           required
         />
       </div>
@@ -134,9 +144,14 @@ export function PostForm() {
         </p>
       )}
 
-      <Button type="submit" disabled={saving}>
-        {saving ? "저장 중..." : "발행"}
-      </Button>
+      <div className="flex items-center justify-between gap-3 pt-2">
+        <span className="truncate font-mono text-xs text-muted-foreground">
+          {slug ? `/posts/${slug}-<urlId>` : "/posts/<urlId>"}
+        </span>
+        <Button type="submit" disabled={saving}>
+          {saving ? "저장 중..." : "발행"}
+        </Button>
+      </div>
     </form>
   );
 }

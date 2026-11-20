@@ -14,8 +14,12 @@ interface SignInFormProps {
 
 function GoogleMark() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="size-4">
-      <path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.3-1.6 3.8-5.4 3.8-3.3 0-5.9-2.7-5.9-6s2.6-6 5.9-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.3 14.6 2.3 12 2.3 6.6 2.3 2.3 6.6 2.3 12S6.6 21.7 12 21.7c5.6 0 9.3-3.9 9.3-9.5 0-.6-.1-1.1-.2-1.6H12z" />
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="size-[15px]">
+      <path
+        fill="currentColor"
+        opacity="0.82"
+        d="M12 10.2v3.9h5.4c-.2 1.3-1.6 3.8-5.4 3.8-3.3 0-5.9-2.7-5.9-6s2.6-6 5.9-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.3 14.6 2.3 12 2.3 6.6 2.3 2.3 6.6 2.3 12S6.6 21.7 12 21.7c5.6 0 9.3-3.9 9.3-9.5 0-.6-.1-1.1-.2-1.6H12z"
+      />
     </svg>
   );
 }
@@ -64,20 +68,24 @@ export function SignInForm({ googleEnabled }: SignInFormProps) {
           <Button
             type="button"
             variant="outline"
-            className="w-full"
+            className="h-9.5 w-full"
             disabled={pending}
             onClick={handleGoogle}
           >
             <GoogleMark />
             Continue with Google
           </Button>
-          <p className="text-center text-xs text-muted-foreground">또는 이메일로</p>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground before:h-px before:flex-1 before:bg-border after:h-px after:flex-1 after:bg-border">
+            또는 이메일로
+          </div>
         </>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">이메일</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="email" className="text-[13px] text-body-secondary">
+            이메일
+          </Label>
           <Input
             id="email"
             type="email"
@@ -88,8 +96,10 @@ export function SignInForm({ googleEnabled }: SignInFormProps) {
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="password">비밀번호</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="password" className="text-[13px] text-body-secondary">
+            비밀번호
+          </Label>
           <Input
             id="password"
             type="password"
@@ -106,7 +116,7 @@ export function SignInForm({ googleEnabled }: SignInFormProps) {
           </p>
         )}
 
-        <Button type="submit" className="w-full" disabled={pending}>
+        <Button type="submit" className="mt-1 h-9.5 w-full" disabled={pending}>
           {pending ? "확인 중..." : "로그인"}
         </Button>
       </form>

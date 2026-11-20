@@ -1,9 +1,11 @@
 import { prisma } from "@/lib/db";
+import { estimateReadingMinutes } from "@/lib/markdown";
 import { BlogPost, BlogMeta, Count } from "@/types/blog";
 import { PostStatus } from "@/lib/generated/prisma/enums";
 import type { PostModel } from "@/lib/generated/prisma/models/Post";
 
 function toBlogMeta(post: PostModel): BlogMeta {
+  const readingMinutes = estimateReadingMinutes(post.content);
   return {
     title: post.title,
     description: post.description ?? "",
@@ -12,6 +14,7 @@ function toBlogMeta(post: PostModel): BlogMeta {
       : post.createdAt.toISOString().split("T")[0],
     tags: post.tags,
     category: post.category ?? undefined,
+    readingMinutes: readingMinutes > 0 ? readingMinutes : undefined,
   };
 }
 

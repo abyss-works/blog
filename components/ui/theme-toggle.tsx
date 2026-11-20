@@ -13,7 +13,7 @@ export function ThemeToggle() {
   const mounted = useSyncExternalStore(noop, () => true, () => false);
 
   if (!mounted) {
-    return <span aria-hidden="true" className="inline-block size-9" />;
+    return <span aria-hidden="true" className="inline-block size-8" />;
   }
 
   const dark = resolvedTheme === "dark";
@@ -25,7 +25,11 @@ export function ThemeToggle() {
       aria-label={dark ? "라이트 테마로 전환" : "다크 테마로 전환"}
       onClick={() => setTheme(dark ? "light" : "dark")}
     >
-      {dark ? <SunIcon aria-hidden="true" /> : <MoonIcon aria-hidden="true" />}
+      {dark ? (
+        <SunIcon aria-hidden="true" className="size-[15px]" />
+      ) : (
+        <MoonIcon aria-hidden="true" className="size-[15px]" />
+      )}
     </Button>
   );
 }

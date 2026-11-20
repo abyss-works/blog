@@ -34,7 +34,7 @@ page() { # page <경로> <기대코드> [추가로 포함해야 할 문자열...
   done
 }
 
-page "/" 200 '<aside'
+page "/" 200 '카테고리 필터'
 page "/tags" 200
 page "/categories" 200
 page "/about" 200

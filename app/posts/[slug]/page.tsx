@@ -33,13 +33,15 @@ export default async function PostPage({ params }: PageProps) {
   const headings = extractHeadings(post.content ?? "");
 
   return (
-    <Container size="narrow" className="relative pb-8">
-      <article>
-        <ArticleHeader post={post} />
+    <Container className="pt-10 pb-16 sm:pt-12 sm:pb-20">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,680px)_196px] lg:justify-between">
+        <article className="min-w-0">
+          <ArticleHeader post={post} />
+          {post.content && <PostContent content={post.content} />}
+          <ArticleNav prev={prev} next={next} />
+        </article>
         <Toc headings={headings} />
-        {post.content && <PostContent content={post.content} />}
-      </article>
-      <ArticleNav prev={prev} next={next} />
+      </div>
     </Container>
   );
 }

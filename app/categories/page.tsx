@@ -11,15 +11,20 @@ export const metadata: Metadata = { title: "Categories" };
 export default async function CategoriesPage() {
   const { categories } = await getTaxonomy();
   return (
-    <Container className="pb-8">
+    <Container>
       <PageHeader
         title="Categories"
-        description={`${categories.length}개의 카테고리`}
+        actions={
+          <span className="font-mono text-xs tabular-nums">
+            {categories.length}개의 카테고리
+          </span>
+        }
       />
       <IndexGrid
         items={categories}
         hrefOf={categoryHref}
         emptyText="아직 카테고리가 없습니다."
+        variant="rows"
       />
     </Container>
   );

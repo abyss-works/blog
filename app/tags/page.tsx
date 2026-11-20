@@ -11,9 +11,21 @@ export const metadata: Metadata = { title: "Tags" };
 export default async function TagsPage() {
   const { tags } = await getTaxonomy();
   return (
-    <Container className="pb-8">
-      <PageHeader title="Tags" description={`${tags.length}개의 태그`} />
-      <IndexGrid items={tags} hrefOf={tagHref} emptyText="아직 태그가 없습니다." />
+    <Container>
+      <PageHeader
+        title="Tags"
+        actions={
+          <span className="font-mono text-xs tabular-nums">
+            {tags.length}개의 태그
+          </span>
+        }
+      />
+      <IndexGrid
+        items={tags}
+        hrefOf={tagHref}
+        emptyText="아직 태그가 없습니다."
+        variant="tags"
+      />
     </Container>
   );
 }

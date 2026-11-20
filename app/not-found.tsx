@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/layout/page-header";
 
 export default function NotFound() {
   return (
-    <Container size="narrow" className="pb-8">
+    <Container size="narrow" className="pb-20">
       <PageHeader
         eyebrow="404"
         title="Not Found"
