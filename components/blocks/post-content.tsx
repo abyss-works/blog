@@ -19,7 +19,7 @@ function textOf(node: React.ReactNode): string {
 function languageOf(node: React.ReactNode): string | undefined {
   if (!isValidElement<{ className?: string }>(node)) return undefined;
   const cls = node.props.className ?? "";
-  const match = cls.match(/language-([\w-]+)/);
+  const match = cls.match(/language-([^\s]+)/);
   return match?.[1];
 }
 
@@ -33,18 +33,10 @@ function buildComponents(): Components {
       const lang = languageOf(children);
       return <CodeBlock language={lang}>{children}</CodeBlock>;
     },
-    code({ className, children, ...props }) {
-      const isInline = !className;
-      if (isInline) {
-        return (
-          <code
-            className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[0.85em] text-foreground"
-            {...props}
-          >
-            {children}
-          </code>
-        );
-      }
+    code({ node: _node, className, children, ...props }) {
+      void _node;
+      // 인라인 코드 스타일은 globals.css의 .post-prose :not(pre) > code가 맡아
+      // 언어 미지정 펜스 코드 블록이 인라인 배지로 오인되는 일을 막는다.
       return (
         <code className={className} {...props}>
           {children}
@@ -153,7 +145,7 @@ interface PostContentProps {
 
 export function PostContent({ content }: PostContentProps) {
   return (
-    <div className="text-[16px] leading-[1.88] text-body-secondary">
+    <div className="post-prose text-[16px] leading-[1.88] text-body-secondary">
       <ReactMarkdown
         components={buildComponents()}
         rehypePlugins={[rehypeHighlight]}

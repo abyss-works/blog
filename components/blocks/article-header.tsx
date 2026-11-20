@@ -25,7 +25,7 @@ export function ArticleHeader({ post }: ArticleHeaderProps) {
             <span aria-hidden="true">·</span>
             <Link
               href={categoryHref(post.category)}
-              className="font-sans font-medium text-mineral transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
+              className="font-sans font-medium text-mineral hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
             >
               {post.category}
             </Link>
@@ -55,9 +55,9 @@ export function ArticleHeader({ post }: ArticleHeaderProps) {
             <li key={tag}>
               <Link
                 href={tagHref(tag)}
-                className="opacity-80 transition-colors hover:text-mineral hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
+                className="transition-colors hover:text-mineral focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
               >
-                <span aria-hidden="true" className="mr-0.5 opacity-45">
+                <span aria-hidden="true" className="mr-0.5">
                   #
                 </span>
                 {tag}

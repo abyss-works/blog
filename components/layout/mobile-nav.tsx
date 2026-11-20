@@ -11,6 +11,13 @@ interface MobileNavProps {
   items: NavItem[];
 }
 
+function isActiveRoute(pathname: string, href: string): boolean {
+  if (href === "/") {
+    return pathname === "/" || pathname.startsWith("/posts/");
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function MobileNav({ items }: MobileNavProps) {
   // 연 시점의 경로를 기억해 경로가 바뀌면 저절로 닫힌 상태가 된다.
   const [openedAt, setOpenedAt] = useState<string | null>(null);
@@ -47,7 +54,7 @@ export function MobileNav({ items }: MobileNavProps) {
             <li key={item.href} className="border-b border-border last:border-b-0">
               <Link
                 href={item.href}
-                aria-current={pathname === item.href ? "page" : undefined}
+                aria-current={isActiveRoute(pathname, item.href) ? "page" : undefined}
                 className="block py-3 text-[14.5px] text-body-secondary transition-colors hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {item.label}

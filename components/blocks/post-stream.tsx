@@ -20,19 +20,19 @@ export function PostStream({ posts, emptyText }: PostStreamProps) {
       {posts.map((post) => (
         <li key={post.id} className="hairline-sheen border-b border-border">
           <article className="group relative grid grid-cols-1 gap-2 py-6 sm:grid-cols-[164px_minmax(0,1fr)] sm:gap-8 sm:py-7">
-            <div className="flex flex-row items-center gap-2.5 pt-0.5 sm:flex-col sm:items-start sm:gap-1.5">
+            <div className="flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1 pt-0.5 sm:flex-col sm:flex-nowrap sm:items-start sm:gap-1.5">
               <time
                 dateTime={post.date}
-                className="font-mono text-[12.5px] tabular-nums text-muted-foreground transition-colors duration-200 group-hover:text-body-secondary"
+                className="shrink-0 font-mono text-[12.5px] tabular-nums text-muted-foreground transition-colors duration-200 group-hover:text-body-secondary"
               >
                 {formatMonth(post.date)}
               </time>
               {(post.category || post.readingMinutes) && (
-                <div className="flex items-center gap-1.5 text-[12.5px] text-muted-foreground">
+                <div className="flex min-w-0 max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[12.5px] text-muted-foreground">
                   {post.category && (
                     <Link
                       href={categoryHref(post.category)}
-                      className="relative z-10 font-medium text-mineral opacity-85 transition-opacity duration-200 hover:opacity-100 group-hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
+                      className="relative z-10 max-w-full truncate font-medium text-mineral transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
                     >
                       {post.category}
                     </Link>
@@ -41,7 +41,9 @@ export function PostStream({ posts, emptyText }: PostStreamProps) {
                     <span aria-hidden="true">·</span>
                   )}
                   {post.readingMinutes && (
-                    <span className="tabular-nums">{post.readingMinutes} min</span>
+                    <span className="shrink-0 whitespace-nowrap tabular-nums">
+                      {post.readingMinutes} min
+                    </span>
                   )}
                 </div>
               )}
@@ -65,14 +67,14 @@ export function PostStream({ posts, emptyText }: PostStreamProps) {
               )}
 
               {post.tags.length > 0 && (
-                <ul className="relative z-10 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11.5px] text-muted-foreground">
+                <ul className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11.5px] text-muted-foreground">
                   {post.tags.map((tag) => (
                     <li key={tag}>
                       <Link
                         href={tagHref(tag)}
-                        className="opacity-80 transition-colors hover:text-mineral hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
+                        className="relative z-10 transition-colors hover:text-mineral focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
                       >
-                        <span aria-hidden="true" className="mr-0.5 opacity-45">
+                        <span aria-hidden="true" className="mr-0.5">
                           #
                         </span>
                         {tag}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/layout/container";
 
 const linkClass =
-  "inline-flex h-8 items-center text-[12.5px] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm";
+  "inline-flex h-8 min-w-8 items-center justify-center px-1.5 text-[12.5px] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm";
 
 function GitHubMark() {
   // lucide는 브랜드 아이콘을 제공하지 않아 GitHub 마크를 직접 그린다.
