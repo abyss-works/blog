@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getPosts } from "@/services/post";
 import { Container } from "@/components/layout/container";
 import { PageHeader } from "@/components/layout/page-header";
-import { PostGrid } from "@/components/blocks/post-grid";
+import { PostStream } from "@/components/blocks/post-stream";
 
 export const dynamic = "force-dynamic";
 
@@ -19,13 +19,17 @@ export default async function CategoryPage({ params }: PageProps) {
   const posts = await getPosts({ category });
 
   return (
-    <Container className="pb-8">
+    <Container>
       <PageHeader
         eyebrow="Category"
         title={category}
-        description={`${posts.length}개의 글`}
+        actions={
+          <span className="font-mono text-xs tabular-nums">
+            {posts.length}개의 글
+          </span>
+        }
       />
-      <PostGrid posts={posts} emptyText="이 카테고리의 글이 없습니다." />
+      <PostStream posts={posts} emptyText="이 카테고리의 글이 없습니다." />
     </Container>
   );
 }

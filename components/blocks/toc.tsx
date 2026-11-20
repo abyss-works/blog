@@ -1,31 +1,35 @@
 import { Heading } from "@/lib/markdown";
-import { Eyebrow } from "@/components/layout/eyebrow";
 
 interface TocProps {
   headings: Heading[];
 }
 
-/** 글 목차. xl 이상에서 본문 오른쪽에 붙는다. 제목이 없으면 그리지 않는다. */
+/** 글 목차. 넓은 화면에서 본문 우측에 고정된다. 제목이 없으면 그리지 않는다. */
 export function Toc({ headings }: TocProps) {
   if (headings.length === 0) return null;
+
   return (
-    <nav
+    <aside
       aria-label="목차"
-      className="hidden xl:block absolute top-10 left-full ml-12 w-56 text-sm"
+      className="hidden lg:block lg:sticky lg:top-[88px] lg:self-start"
     >
-      <Eyebrow className="mb-3">Contents</Eyebrow>
-      <ul className="flex flex-col gap-1.5 border-l border-border">
-        {headings.map((h) => (
-          <li key={h.id} className={h.depth === 3 ? "pl-6" : "pl-3"}>
-            <a
-              href={`#${h.id}`}
-              className="block text-muted-foreground hover:text-foreground"
-            >
-              {h.text}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+      <nav aria-label="본문 목차" className="border-l border-border pl-3.5">
+        <p className="mb-2.5 text-xs font-medium text-muted-foreground">
+          Contents
+        </p>
+        <ul className="flex flex-col gap-1">
+          {headings.map((h) => (
+            <li key={h.id} className={h.depth === 3 ? "pl-3" : undefined}>
+              <a
+                href={`#${h.id}`}
+                className="block py-1 text-[12.5px] leading-snug text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:rounded-sm"
+              >
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
   );
 }

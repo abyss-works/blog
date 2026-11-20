@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SignInForm } from "./sign-in-form";
 
 export const metadata: Metadata = { title: "Sign in" };
@@ -11,17 +10,19 @@ export default function SignInPage() {
   );
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle>
-            <h1>Sign in</h1>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <SignInForm googleEnabled={googleEnabled} />
-        </CardContent>
-      </Card>
+    <div className="flex min-h-[64vh] items-center justify-center px-4 py-14">
+      <section
+        aria-label="로그인"
+        className="frame-top-sheen w-full max-w-[392px] rounded-[10px] border border-border bg-card px-7 py-7.5"
+      >
+        <h1 className="text-[21px] font-semibold tracking-[-0.025em] text-foreground">
+          Sign in
+        </h1>
+        <p className="mt-1.5 mb-6 text-[13.5px] text-muted-foreground">
+          글 작성과 관리를 위해 계정으로 로그인합니다.
+        </p>
+        <SignInForm googleEnabled={googleEnabled} />
+      </section>
     </div>
   );
 }
