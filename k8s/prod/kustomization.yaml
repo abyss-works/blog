@@ -16,6 +16,7 @@ resources:
   - postgres-service.yaml
   - ingress.yaml
   - certificate.yaml
+  - traefik-secret-reader.yaml
 images:
   - name: ghcr.io/abyss-works/blog
     newTag: git-ed074a9

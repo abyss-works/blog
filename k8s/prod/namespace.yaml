@@ -5,6 +5,7 @@ metadata:
   labels:
     abyssworks.dev/environment: prod
     abyssworks.dev/project: blog
+    abyssworks.dev/ingress: traefik
     pod-security.kubernetes.io/enforce: baseline
     pod-security.kubernetes.io/enforce-version: v1.36
     pod-security.kubernetes.io/audit: restricted
